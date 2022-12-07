@@ -17,4 +17,5 @@ def roman_to_int(roman_string):
                     num += elem[1]
                 elif last < elem[1]:
                     num += elem[1] - (last * 2)
-                last = elem[1]                                                                                              return num
+                last = elem[1]
+    return num
