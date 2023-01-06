@@ -1,80 +1,67 @@
 #!/usr/bin/python3
-"""
-This module contains 2 functions
-1]. 'matrix_mul(m_a, m_b):'
-and
-2]. 'get_size(matrix):'
-The complete information of the functions
-(prototype, declaration & definition)
-can be found in the function's documentation
-"""
-
-
-from functools import reduce
+# 100-matrix_mul.py
+"""Defines a matrix multiplication function."""
 
 
 def matrix_mul(m_a, m_b):
+    """Multiply two matrices.
+    Args:
+        m_a (list of lists of ints/floats): The first matrix.
+        m_b (list of lists of ints/floats): The second matrix.
+    Raises:
+        TypeError: If either m_a or m_b is not a list of lists of ints/floats.
+        TypeError: If either m_a or m_b is empty.
+        TypeError: If either m_a or m_b has different-sized rows.
+        ValueError: If m_a and m_b cannot be multiplied.
+    Returns:
+        A new matrix representing the multiplication of m_a by m_b.
     """
-    This function multiplies 2 matrices.
-    It takes as parameters,
-    m_a => which is a list of lists,
-    m_b => which is a list of lists,
-    and if not these parameters, raises an error.
-    Then multiplies the 2 lists of lists, and returns
-    a list of lists corresponding to the resulting size
-    """
-    def get_size(matrix):
-        """
-        This function gets the size of a matrix.
-        It takes as a parameter,
-        matrix => which is a list of lists,
-        then returns the size of the matrix
-        (rows and columns respectively) in a tuple
-        """
-        return (len(matrix), len(matrix[0]))
 
-    mess_1_a = "m_a should contain only integers or floats"
-    mess_1_b = "m_b should contain only integers or floats"
+    if m_a == [] or m_a == [[]]:
+        raise ValueError("m_a can't be empty")
+    if m_b == [] or m_b == [[]]:
+        raise ValueError("m_b can't be empty")
+
     if not isinstance(m_a, list):
         raise TypeError("m_a must be a list")
-    elif len(m_a) == 0:
-        raise ValueError("m_a can't be empty")
-    elif all(isinstance(a, list) for a in m_a) is not True:
-        raise TypeError("m_a must be a list of lists")
-    elif all(len(a) != 0 for a in m_a) is not True:
-        raise ValueError("m_a can't be empty")
-    elif all(isinstance(v, (int, float)) for a in m_a for v in a) is not True:
-        raise TypeError("m_a should contain only integers or floats")
-    elif all(len(a) == len(m_a[0]) for a in m_a) is not True:
-        raise TypeError("each row of m_a must be of the same size")
-    elif not isinstance(m_b, list):
+    if not isinstance(m_b, list):
         raise TypeError("m_b must be a list")
-    elif len(m_b) == 0:
-        raise ValueError("m_b can't be empty")
-    elif all(isinstance(b, list) for b in m_b) is not True:
+
+    if not all(isinstance(row, list) for row in m_a):
+        raise TypeError("m_a must be a list of lists")
+    if not all(isinstance(row, list) for row in m_b):
         raise TypeError("m_b must be a list of lists")
-    elif all(len(b) != 0 for b in m_b) is not True:
-        raise ValueError("m_b can't be empty")
-    elif all(isinstance(v, (int, float)) for b in m_b for v in b) is not True:
+
+    if not all((isinstance(ele, int) or isinstance(ele, float))
+               for ele in [num for row in m_a for num in row]):
+        raise TypeError("m_a should contain only integers or floats")
+    if not all((isinstance(ele, int) or isinstance(ele, float))
+               for ele in [num for row in m_b for num in row]):
         raise TypeError("m_b should contain only integers or floats")
-    elif all(len(b) == len(m_b[0]) for b in m_b) is not True:
-        raise TypeError("each row of m_b must be of the same size")
-    elif get_size(m_a)[-1] != get_size(m_b)[0]:
+
+    if not all(len(row) == len(m_a[0]) for row in m_a):
+        raise TypeError("each row of m_a must should be of the same size")
+    if not all(len(row) == len(m_b[0]) for row in m_b):
+        raise TypeError("each row of m_b must should be of the same size")
+
+    if len(m_a[0]) != len(m_b):
         raise ValueError("m_a and m_b can't be multiplied")
-    else:
-        m_bb = [[inn[num] for inn in m_b] for num in range(len(m_b[0]))]
-        collate = []
-        for a in m_a:
-            level = []
-            for b in m_bb:
-                level.append((a, b))
-            collate.append(level)
-        result = []
-        for items in collate:
-            inner = []
-            for item in items:
-                pairs = [[new[k] for new in item] for k in range(len(item[0]))]
-                sp = sum([reduce(lambda x, y: x * y, pair) for pair in pairs])
-                inner.append(sp)
-            result.append(inner)
-    return result
+
+    inverted_b = []
+    for r in range(len(m_b[0])):
+        new_row = []
+        for c in range(len(m_b)):
+            new_row.append(m_b[c][r])
+        inverted_b.append(new_row)
+
+    new_matrix = []
+    for row in m_a:
+        new_row = []
+        for col in inverted_b:
+            prod = 0
+            for i in range(len(inverted_b[0])):
+                prod += row[i] * col[i]
+            new_row.append(prod)
+        new_matrix.append(new_row)
+
+    return new_matrix
