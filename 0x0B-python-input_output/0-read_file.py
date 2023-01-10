@@ -7,5 +7,6 @@
         Nothing
     """
 def read_file(filename=""):
-    with open('workfile', encoding="utf-8") as f:
+    """Print the contents of a UTF8 text file to stdout."""
+    with open(filename, encoding="utf-8") as f:
         print(f, end="")
