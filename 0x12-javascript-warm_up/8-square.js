@@ -3,7 +3,7 @@
 const process = require('process');
 
 if (parseInt(process.argv[2])) {
-  let str = '';
+  let str = ' ';
   for (let i = 1; i <= process.argv[2]; i++) {
     str += 'x';
   }
