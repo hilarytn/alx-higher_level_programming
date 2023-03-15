@@ -5,7 +5,7 @@ let arg = process.argv[2];
 let temp = 1;
 
 function factorial () {
-  if (!parseInt(arg) || arg === 0) { console.log(1); } else {
+  if (!arg || arg === 0) { console.log(1); } else {
     temp = temp * arg;
     arg--;
     if (arg > 1) { factorial(arg); } else { console.log(temp); }
