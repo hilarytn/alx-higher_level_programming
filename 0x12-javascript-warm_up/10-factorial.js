@@ -8,7 +8,7 @@ function factorial () {
   if (isNaN(arg)|| arg === 0) { console.log(1); } else {
     temp = temp * arg;
     arg--;
-    if (arg > 1) { factorial(arg); } else { console.log(temp); }
+    if (arg > 1) { factorial(Number(arg)); } else { console.log(temp); }
     return 0;
   }
 }
