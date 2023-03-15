@@ -13,5 +13,4 @@ function factorial () {
   }
 }
 
-factorial(arg);
-
+factorial(Number(arg));
